@@ -1,9 +1,9 @@
 schema_version = "1.0.0"
 
 id = "studio_tools"
-version = "1.1.0"
+version = "1.2.0"
 name = "Studio Tools"
-tagline = "Delivery packager, render queue, reference matcher, light rig, rename"
+tagline = "Delivery, render queue, reference, light rig, rename, AutoComp"
 maintainer = "Cecil Sam Mathew"
 type = "add-on"
 
@@ -13,3 +13,4 @@ license = ["SPDX:GPL-3.0-or-later"]
 
 [permissions]
 files = "Read the open project, write delivery folders, renders and logs"
+network = "AutoComp talks to a local AI server (LM Studio or Ollama) on this computer"

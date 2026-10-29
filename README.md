@@ -1,6 +1,6 @@
 # Studio Tools for Blender
 
-Five small production tools in one add-on, built for product and commercial work.
+Six production tools in one add-on, built for product and commercial work.
 Everything lives in the 3D Viewport sidebar (**N** → **Studio** tab).
 
 | Tool | What it does |
@@ -10,12 +10,13 @@ Everything lives in the 3D Viewport sidebar (**N** → **Studio** tab).
 | **Reference Matcher** | Overlays a reference image on the camera and compares your render against it, region by region. |
 | **Light Follow Rig** | Makes a set of lights travel (and optionally turn) with a hero object, so the look holds through an animation. |
 | **Quick Rename** | Cleans up names: removes `(notes)` and `.001` endings, find/replace, prefix/suffix, Title Case, and keeps mesh and light data names in sync. |
+| **AutoComp** | Describe a look in plain words and a local AI model builds the compositor nodes for it. No API keys, nothing leaves your PC. |
 
 Requires Blender **4.2 or newer**. Tested on Blender 5.2.
 
 ## Install
 
-1. Download `studio_tools-1.1.0.zip` from the [`dist`](dist) folder.
+1. Download `studio_tools-1.2.0.zip` from the [`dist`](dist) folder.
 2. In Blender: **Edit → Preferences → Get Extensions → ⌄ menu (top right) → Install from Disk…**, then pick the zip.
 3. Open the sidebar in the 3D Viewport (**N**) and click the **Studio** tab.
 
@@ -63,6 +64,28 @@ A small empty called `<object> Light Rig` is created, and the lights are parente
 ## Quick Rename
 
 Choose **Selected** or **Whole Scene**, and whether to include objects, materials and collections. Tick the clean-up rules you want, and the panel previews the first few changes before you press **Rename**. Undo works.
+
+## AutoComp (local AI)
+
+Type the look you want, e.g. *"soft bloom on highlights, warm highlights with teal shadows, light vignette, fine grain"*, and press **New Comp**. A local AI model replies with a node recipe, and the add-on builds it inside a blue **AutoComp** frame at the end of your existing comp.
+
+- **Adjust** sends the current recipe back with your new instruction (*"less bloom, cooler shadows"*) and rebuilds the frame.
+- **Bypass** switches between the original image and the AutoComp result. **Remove** deletes the frame and reconnects your original chain.
+- If you've run the **Reference Matcher**, tick *Use Reference Matcher numbers* and the model also gets the region-by-region brightness and colour differences, so it can grade towards the reference.
+- The panel appears in the 3D Viewport sidebar and in the Compositor's sidebar (**N → Studio**).
+
+**Safe by design.** The model never writes code. It can only reply with a recipe (node types, settings and links), and the add-on checks every node, setting and socket against the compositor nodes in *your* Blender before building anything. Anything it doesn't recognise is skipped and listed under *Notes*.
+
+**Setup (one time, free):**
+
+1. Install [LM Studio](https://lmstudio.ai), download a model (Qwen 3/3.5 instruct models work well; a 7B+ model is the practical minimum), and load it with a context length of **8192 or more**.
+2. In LM Studio's **Developer** tab, start the server (default `http://localhost:1234`).
+3. In Blender: **Preferences → System → Network → Allow Online Access** must be on (the add-on only calls your own computer).
+4. **Preferences → Add-ons → Studio Tools** → **Test Connection**. Leave *Model* empty to use whichever model is loaded.
+
+Ollama works too: set the server to `http://localhost:11434/v1`.
+
+Local models vary: smaller ones sometimes pick odd values, which is why everything lands in one frame you can bypass, adjust or remove. Generation time depends on your model and GPU (tens of seconds is normal). Blender stays usable while it thinks.
 
 ## License
 
