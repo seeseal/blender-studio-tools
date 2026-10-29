@@ -1,0 +1,15 @@
+schema_version = "1.0.0"
+
+id = "studio_tools"
+version = "1.1.0"
+name = "Studio Tools"
+tagline = "Delivery packager, render queue, reference matcher, light rig, rename"
+maintainer = "Cecil Sam Mathew"
+type = "add-on"
+
+blender_version_min = "4.2.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
+
+[permissions]
+files = "Read the open project, write delivery folders, renders and logs"
